@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<style>
+	div{
+		width: 100px;
+		height: 100px;
+		background: pink;
+	}
+</style>
+<body>
+	<div></div>
+</body>
+</html>
+<script>
+	var div = document.querySelector('div')
+	var t 
+	var speed = 1000
+	div.onclick = function(){
+		clearInterval(t)
+		speed-=100
+		t = setInterval(function(){
+			console.log(1)
+		},speed)
+	}
+</script>

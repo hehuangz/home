@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>register</title>
+	<!-- <script src="./js/register.js"></script> -->
+	<script src="./js/function0117.js"></script>
+	<!-- <script src="./js/ajax0215.js"></script> -->
+</head>
+<style>
+*{
+	margin:0;
+	padding:0;
+	text-decoration: none;
+	font-family: FZSongKeBenXiuKaiS-R-GB;
+	font-size: 16px;
+	list-style: none
+}
+body{
+	background: #081305;
+}
+.boss{
+	width: 1024px;
+	height: 740px;
+	border: 1px solid transparent;
+	margin: 0 auto;
+	float: none;
+	background: url('./images/snake1.jpg') no-repeat center center;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+.box{
+	width:640px;height:400px;
+	/* margin:250px auto 0; */
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	bottom: 50px;
+	background: #fff;
+	border-radius: 5px;
+}
+.login{
+	width:352px;height:274px;
+	float: left;
+	margin:40px auto 0;
+}
+.line{
+	width:1px;height:272px;
+	background: #c4c4c4;
+	margin:94px auto 0;	
+	float:left;
+}
+.register{
+	width:280px;height:320px;
+	margin:30px auto 0;
+	float: left;
+}
+.login>p{
+	text-align: center;
+}
+#username{
+	width:296px;height:40px;
+	font-size: 18px;
+	border:1px solid #e9e9e9;
+	margin:21px 24px 20px 24px;
+	background: #fafafa;
+	/*position: relative;*/
+}
+#password{
+	width:296px;height:40px;
+	font-size: 18px;
+	border:1px solid #e9e9e9;
+	margin:0px 24px 0px 24px;
+	background: #fafafa;
+	/*position: relative;*/
+}
+.login>li{
+	margin-top:24px;
+	text-align: center;
+	cursor: pointer;
+	color:#373737;
+	font-size:12px;
+}
+#remenber{
+	margin-top:28px;
+	margin-left:40px;
+	text-align: center;
+}
+#content{
+	font-size:10px;
+	color:#373737;
+}
+.denglu{
+	width:110px;height:47px;
+	margin-top:18px;
+	margin-left:116px;
+	border:1px solid #9d9d9d;
+	/*border:1px solid #000;*/
+	position: relative;
+	cursor: pointer;
+	color:#545454;
+}
+.denglu>p{
+	position: absolute;
+	top:8px;left:40px;
+	
+}
+.denglu:hover{
+	border:1px solid plum;
+	color: plum;
+}
+.nameagain{
+	width: 100px;height:30px;
+	background: yellowgreen;
+	position: absolute;
+	top:27px;right:36px;
+	border-radius:1px;
+	color:#fff;
+	text-align: center;
+	line-height: 30px;
+	font-size: 10px;
+	display:none;
+}
+.passagain{
+	width: 100px;height:30px;
+	background: yellowgreen;
+	position: absolute;
+	top:6px;right:36px;
+	border-radius: 1px;
+	color:#fff;
+	text-align: center;
+	line-height: 30px;
+	font-size: 10px;
+	display:none;
+
+}
+.sanjiao{
+	/*width:20px;height:20px;*/
+	/*background: red;*/
+	position: absolute;
+	top:7px;left:-12px;
+	border-right:12px solid yellowgreen;
+	border-left:0;
+	border-top:7px solid rgba(0,0,0,0);
+	border-bottom:7px solid rgba(0,0,0,0);
+
+}
+/*再次输入密码*/
+#passworda{
+	width:296px;height:40px;
+	font-size: 18px;
+	border:1px solid #e9e9e9;
+	margin:20px 24px 0px 24px;
+	background: #fafafa;
+	/*position: relative;*/
+}
+.passagaina{
+	width: 100px;height:30px;
+	background: yellowgreen;
+	position: absolute;
+	top:27px;right:36px;
+	border-radius: 1px;
+	color:#fff;
+	text-align: center;
+	line-height: 30px;
+	font-size: 10px;
+	display:none;
+}
+
+/*右边注册部分*/
+.erweima{
+	width:130px;height:130px;
+	border:1px solid #dfdfdf;
+	margin:50px auto 0;
+	background: url(./images/a.jpg);
+	background-size:cover; 
+}
+.register>p{
+	text-align: center;
+	color:#373737;
+	font-size:13px;
+	margin-top:20px;
+}
+.zhuce{
+	width:110px;height:50px;
+	margin-top:20px;
+	margin-left:84px;
+	border:1px solid #9d9d9d;
+	/*border:1px solid #000;*/
+	position: relative;
+	cursor: pointer;
+	color:#545454;
+}
+.zhuce>p{
+	position: absolute;
+	top:8px;left:38px;
+	
+}
+.zhuce:hover{
+	border:1px solid plum;
+	color: plum;
+}
+.close{
+	width:16px;height:16px;
+	position:relative;
+	/*border:1px solid red;*/
+	top:16px;right:-256px;
+	cursor: pointer;
+}
+</style>
+<body style="overflow-y:hidden;overflow-x:hidden">
+<div class="boss">
+	<form class="box" name="myform">
+		<img src="./images/close.png" alt="" class="close">
+		<div class="login">
+			<p>注册<br>register</p>
+			<ul style="position:relative">
+				<input type="text" placeholder="&nbsp;&nbsp;&nbsp;请输入您的用户名(3~10位)" id="username">
+				<span class="nameagain">该用户名已存在<i class="sanjiao"></i></span>
+			</ul>
+			<ul style="position:relative">
+				<input type="password" placeholder="&nbsp;&nbsp;&nbsp;请输入您的密码(6~16位)" id="password">
+				<span class="passagain">密码格式不正确<i class="sanjiao"></i></span>
+			</ul>
+			<ul style="position:relative">
+				<input type="password" placeholder="&nbsp;&nbsp;&nbsp;请再次确认您的密码" id="passworda">
+				<span class="passagaina">俩次密码不一致<i class="sanjiao"></i></span>
+			</ul>	
+			<input type="checkbox" id="remenber">
+			<label for="remenber" id="content">我已阅读并同意遵守《法律声明》和《隐私条款》</label>	
+			<ul class="denglu"><p>注册<br>login</p></ul>
+		</div>
+		<div class="line"></div>
+		<div class="register">
+			<ul class="erweima"></ul>
+			<p>使用微信二维码扫码登入</p>		
+			<p>如果您还已拥有账户，可在此登录</p>	
+			<ul class="zhuce"><p>登录<br>register</p>
+			</ul>
+		</div>
+		
+	</form>
+</div>
+</body>
+</html>
+<script>
+// 点击右上关闭图标，将整个登录框关闭
+var close=$(".close")[0];
+var box=$(".box")[0];
+close.onclick=function(){
+	box.style.display='none';
+}
+// 点击登录页面跳转
+var denglu=$(".zhuce")[0];
+denglu.onclick=function(){
+	location.href='login.html';
+}
+</script>

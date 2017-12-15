@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>puke</title>
+	<link rel="stylesheet" href="./css/public.css">
+	<script src="./js/jquery.js"></script>
+	<script src="./js/puke.js"></script>
+	<!-- 十三扑克牌游戏2017.2.24 -->
+</head>
+<style>
+body{
+	/*width:1400px;height:700px;*/
+	background: url(./images/bigbg.jpg) no-repeat;
+	background-size:1400px;
+	margin:auto;
+}
+.center{
+	width:;
+}
+.centerBox{
+	width:700px;height:650px;
+	/*border:1px solid red;*/
+	margin:20px auto 0;
+	position:relative;
+}
+.pai{
+	width:90px;height:130px;
+	position: absolute;
+	top:0;left:300px;
+	/*background: url(./images/2s.png);*/
+	background-size: 90px;
+	margin:10px 10px 0 0;
+	opacity: 0;
+}
+.moveRight{
+	width:90px;height:40px;
+	border-radius: 5px;
+	/*font-size: 30px;*/
+	background: orange;
+	position: absolute;
+	bottom:120px;left:300px;
+	color:#fff;
+	text-align: center;
+	line-height: 40px;
+	cursor: pointer;
+}
+.moveLeft{
+	width:90px;height:40px;
+	border-radius: 5px;
+	/*font-size: 30px;*/
+	background: green;
+	position: absolute;
+	bottom:70px;left:300px;
+	color:#fff;
+	text-align: center;
+	line-height: 40px;
+	cursor: pointer;
+}
+.active{
+	/*width:90px;height:130px;*/
+	box-shadow:0 0 0 4px rgba(2,173,226,0.85);
+}
+</style>
+<body style="overflow-x:hidden;overflow-y:hidden">
+<div class="centerBox">
+	<ul class="moveRight">&gt;</ul>
+	<ul class="moveLeft">&lt;</ul>
+</div>
+
+</body>
+</html>
