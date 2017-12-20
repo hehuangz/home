@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<!-- <meta src='images/two.JPG'> -->
+	<link rel="shortcut icon" href="images/two.jpg">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+</head>
+<style>
+	*{
+		padding: 0;
+		margin: 0;
+		box-sizing: border-box;
+	}
+	body{
+		background: #081305;
+	}
+	.boss{
+		width: 1024px;
+		height: 740px;
+		border: 1px solid transparent;
+		margin: 0 auto;
+		float: none;
+		background: url('./images/snake2.jpg') no-repeat center center;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+	.box{
+		width: 692px;
+		height: 576px;
+		border-top: 1px solid rgba(255,255,255,0.2);
+		border-left: 1px solid rgba(255,255,255,0.2);
+		position: absolute;
+		top: 118px;
+		left: 40px;
+
+	}
+	div{
+		width: 30px;
+		height: 30px;
+		border-right: 1px solid rgba(255,255,255,0.2);
+		border-bottom: 1px solid rgba(255,255,255,0.2);
+		float: left;
+	}
+	.she{
+		background: #9acd02;
+		border-radius: 50%;
+		/* border: 6px solid #fefb88; */
+	}
+	.box .head{
+		/* border: none; */
+		border-radius: 0;
+		background: url('images/snake.png') center center;
+		background-size:36px 36px;
+	}
+	.food{
+		background: url('images/apple.png');
+		background-position: center center; 
+		background-size:36px 36px;
+	}
+	h2{
+		position: absolute;
+		right: 120px;
+		bottom: 160px;
+		/* color: red; */
+	}
+	h1{
+		position: absolute;
+		right: 118px;
+		bottom: 100px;
+		color: red;
+	}
+	.start{
+		width: 200px;
+		height: 50px;
+		background: rgba(0, 0, 0, 0);
+		position: absolute;
+		right: 30px;
+		top: 135px;
+		border: none;
+		cursor: pointer;
+	}
+	.close{
+		width: 200px;
+		height: 50px;
+		background: rgba(0, 0, 0, 0);
+		position: absolute;
+		right: 30px;
+		top: 292px;
+		border: none;
+		cursor: pointer;
+	}
+	.two{
+		display: block;
+		width: 100px;
+		height: 100px;
+		/* background: url('./images/two.JPG') no-repeat; */
+		position: absolute;
+		top: 50%;
+		margin-top: -50px;
+		right: -100px;
+	}
+	.two img{
+		display: block;
+		width: 100%;
+	}
+	.two p{
+		color: #fff;
+		font-size: 24px;
+		text-align: center;
+		margin-top: 5px;
+	}
+	/* "overflow-x:hidden;overflow-y:hidden" */
+</style>
+<body style='overflow-y:hidden'>
+<div class="boss">
+	<p class="box"></p>
+	<h2><span>1</span></h2>
+	<h1><span>0</span></h1>
+	<div class="start"></div>
+	<div class="close"></div>
+	<a href='snakePK.html' class="two">
+		<img src="./images/two.JPG" alt="">
+		<p>两人PK!</p>
+	</a>
+</div>
+</html>
+<script>
+/*优化的功能：1.比如蛇正往右跑时，按下方向键，蛇往下走，此时快速按下左，蛇头还没来得及往下就往左，撞到了自己导致游戏失败，这种误操作很容易发生，加开关来优化*/
+
+// 构造函数的方式：
+function game(){
+	this.btn = document.querySelector('.start')
+	this.closebtn = document.querySelector('.close')
+	this.box = document.querySelector('.box')
+	this.span = document.querySelector('h1>span')
+	this.span2 = document.querySelector('h2>span')
+	this.she = []
+	this.food = {}
+	this.dir = 'r'
+	this.fenshu = 0
+	this.t
+	this.speed = 200
+	this.card = 1
+	this.flag = true//比如蛇正往右跑时，按下方向键，蛇往下走，此时快速按下左，蛇头还没来得及往下就往左，撞到了自己导致游戏失败，这种误操作很容易发生，加此开关来优化
+}
+game.prototype = {
+	play:function(){
+		this.drawbg()
+		this.drawsnake()
+		this.food = this.getFood()
+		this.keydir()
+		this.start()
+		this.closegame()
+	},
+	drawbg:function(){
+		var str = ''
+		for (var i = 0; i < 19; i++) {
+			for (var j = 0; j < 23; j++) {
+				str += `<div id=c${j}-${i}></div>`
+			}
+		}
+		this.box.innerHTML = str
+	},
+	drawsnake:function(){
+		this.she=[
+			{x:0,y:0},
+			{x:1,y:0},
+			{x:2,y:0}
+		]
+		this.she.forEach(function(obj){
+			var sheid = `#c${obj.x}-${obj.y}`
+			document.querySelector(sheid).classList.add('she')
+		})
+		document.querySelector(`#c${this.she[this.she.length-1].x}-${this.she[this.she.length-1].y}`).classList.add('head')
+	},
+	getFood:function(){
+			// 该函数用于页面放置食物，以及返回食物坐标
+		do{
+			x = Math.floor(Math.random()*23)
+			y = Math.floor(Math.random()*19)
+		}while (this.check(x,y))
+		// 检测食物坐标是否与蛇坐标重叠
+		document.querySelector(`#c${x}-${y}`).classList.add('food')
+		return {x:x,y:y}
+	},
+	check:function(a,b){
+		return this.she.some(function(obj){
+			return (obj.x == a && obj.y == b)
+		})
+	},
+	start:function(){
+		var self = this
+		this.btn.onclick=function(){
+			self.t = setInterval(function(){
+				self.move(self.dir)
+			},self.speed)	
+		}
+		// console.log(self.speed)
+	},
+	move:function(){
+		var newsec = {x:this.she[this.she.length-1].x+1,y:this.she[this.she.length-1].y}
+		// 方向改变时新蛇头产生的位置改变
+		switch(this.dir){
+			case 'l': newsec = {x:this.she[this.she.length-1].x-1,y:this.she[this.she.length-1].y};break;
+			case 't': newsec = {x:this.she[this.she.length-1].x,y:this.she[this.she.length-1].y-1};break;
+			case 'r': newsec = {x:this.she[this.she.length-1].x+1,y:this.she[this.she.length-1].y};break;
+			case 'b': newsec = {x:this.she[this.she.length-1].x,y:this.she[this.she.length-1].y+1};break;
+		}
+		// console.log(newsec.x,newsec.y)
+		// 判断是否咬到自己，或者撞墙，是则游戏结束，清除时间函数，返回
+		
+		if(this.check(newsec.x,newsec.y) || document.querySelector(`#c${newsec.x}-${newsec.y}`)==null){
+			clearInterval(this.t)
+			var flagGame=confirm("获得分数:"+this.fenshu+"分! 再玩一次？");
+			if(flagGame){
+				location.reload()
+				return
+			}else{
+				return
+			}		
+		}
+
+		this.she.push(newsec)	
+		// 吃到食物，则不把蛇尾剪掉
+		if(this.check(this.food.x,this.food.y)){
+			this.fenshu++
+			this.span.innerHTML = this.fenshu
+			if(this.fenshu == 5*this.card){//难度升级
+				this.card++
+				this.span2.innerHTML = this.card
+				this.speed-=30
+				if(this.speed<=0){
+					this.speed == 200
+				}
+				// this.start()
+				this.btn.onclick()
+				// console.log(this.speed)
+			}
+			this.food = this.getFood()
+		}else{
+			var oldsec = this.she.shift()	
+			document.querySelector(`#c${oldsec.x}-${oldsec.y}`).classList.remove('she')		
+		}
+		document.querySelector(`#c${newsec.x}-${newsec.y}`).className = 'she'
+		// 加蛇头
+		this.she.forEach(function(obj){
+			document.querySelector(`#c${obj.x}-${obj.y}`).classList.remove('head')
+		})
+		document.querySelector(`#c${this.she[this.she.length-1].x}-${this.she[this.she.length-1].y}`).classList.add('head')	
+		this.flag = true 
+	},
+	keydir:function(){
+		var self = this
+		document.onkeydown=function(e){
+			e.preventDefault()
+			var ev = e || window.event
+			if(self.flag){
+				self.flag = false//优化开关	
+			  	switch(ev.keyCode){
+					case 37: 
+					// 如果本来向右移动，则向左移动时无响应
+
+						if(self.dir == 'r'){
+							return
+						}
+						self.dir = 'l';
+						break;
+					case 38: 
+						if(self.dir == 'b'){
+							return
+						}
+						self.dir = 't';
+						break;
+					case 39: 
+						if(self.dir == 'l'){
+							return
+						}
+						self.dir = 'r';
+						break;
+					case 40: 
+						if(self.dir == 't'){
+							return
+						}
+						self.dir = 'b';
+						break;
+				}
+			}
+		}
+	},//keydir over
+	closegame:function(){
+		var self = this
+		this.closebtn.onclick=function(){
+			clearInterval(self.t)
+			var result = confirm('确定退出游戏吗？')
+			if(result){
+				location.href='login.html'
+			}else{
+				return
+			}
+			
+		}
+	}
+}//all over
+// 创建对象需要在最底下
+var snake = new game()
+snake.play()
+
+/*1. 游戏场景的构建（棋盘的思想）
+	构建方法有很多，比如创建一个div标签，设置上id名，再绘制到页面。但是效率低，因为需要循环创建400个div标签，每绘制一次div，前面的div会重绘，绘制400次，性能很低。
+	以下用字符串方法绘制场景，只需要绘制一次，高效，基本所有的游戏场景绘制都是这种方式
+*/
+// var btn = document.querySelector('.start')
+// var box = document.querySelector('.box')
+// var span = document.querySelector('span')
+// var str = ''
+// for (var i = 0; i < 19; i++) {
+// 	for (var j = 0; j < 23; j++) {
+// 		str += `<div id=c${j}-${i}></div>`
+// 	}
+// }
+// box.innerHTML = str
+
+
+// /*2. 绘蛇，用一个对象保存*/
+// var she=[
+// 		{x:0,y:0},
+// 		{x:1,y:0},
+// 		{x:2,y:0}
+// ]
+// she.forEach(function(obj){
+// 	var sheid = `#c${obj.x}-${obj.y}`
+// 	document.querySelector(sheid).classList.add('she')
+// })
+// document.querySelector(`#c${she[she.length-1].x}-${she[she.length-1].y}`).classList.add('head')
+
+// /*3. 食物 */
+// var food = getfood()
+// // 投放食物
+// function getfood(){
+// 	// 该函数用于页面放置食物，以及返回食物坐标
+// 	do{
+// 		x = Math.floor(Math.random()*23)
+// 		y = Math.floor(Math.random()*19)
+// 	}while (check(x,y))
+// 	// 检测食物坐标是否与蛇坐标重叠
+// 	document.querySelector(`#c${x}-${y}`).classList.add('food')
+// 	return {x:x,y:y}
+// }
+// function check(x,y){
+// 	return she.some(function(obj){
+// 		return (obj.x == x && obj.y == y)
+// 	})
+// }
+// // 4. 让蛇移动，方向控制移动，产生新坐标，push，把旧蛇头shift掉
+// var dir = 'r'//方向
+// // 监听键盘,按键盘的上下左右蛇也跟着移动
+// document.onkeydown=function(e){
+// 	e.preventDefault()
+// 	var ev = e || window.event
+// 	switch(ev.keyCode){
+// 		case 37: 
+// 		// 如果本来向右移动，则向左移动时无响应
+// 			if(dir == 'r'){
+// 				return
+// 			}
+// 			dir = 'l';
+// 			break;
+// 		case 38: 
+// 			if(dir == 'b'){
+// 				return
+// 			}
+// 			dir = 't';
+// 			break;
+// 		case 39: 
+// 			if(dir == 'l'){
+// 				return
+// 			}
+// 			dir = 'r';
+// 			break;
+// 		case 40: 
+// 			if(dir == 't'){
+// 				return
+// 			}
+// 			dir = 'b';
+// 			break;
+// 	}
+// }
+// var fenshu = 0//分数
+// function move(dir){
+// 	var newsec = {x:she[she.length-1].x+1,y:she[she.length-1].y}	
+// 	// 方向改变时新蛇头产生的位置改变
+// 	switch(dir){
+// 		case 'l': newsec = {x:she[she.length-1].x-1,y:she[she.length-1].y};break;
+// 		case 't': newsec = {x:she[she.length-1].x,y:she[she.length-1].y-1};break;
+// 		case 'r': newsec = {x:she[she.length-1].x+1,y:she[she.length-1].y};break;
+// 		case 'b': newsec = {x:she[she.length-1].x,y:she[she.length-1].y+1};break;
+// 	}
+// 	// console.log(newsec.x,newsec.y)
+// 	// 判断是否咬到自己，或者撞墙，是则游戏结束，清除时间函数，返回
+// 	if(check(newsec.x,newsec.y) || document.querySelector(`#c${newsec.x}-${newsec.y}`)==null){
+// 		alert('game over')
+// 		clearInterval(t)
+// 		return
+// 	}
+
+// 	she.push(newsec)	
+// 	// 吃到食物，则不把蛇尾剪掉
+// 	if(check(food.x,food.y)){
+// 		fenshu++
+// 		span.innerHTML = fenshu
+// 		food = getfood()
+// 	}else{
+// 		var oldsec = she.shift()	
+// 		document.querySelector(`#c${oldsec.x}-${oldsec.y}`).classList.remove('she')		
+// 	}
+// 	document.querySelector(`#c${newsec.x}-${newsec.y}`).className = 'she'
+// 	// 加蛇头
+// 	she.forEach(function(obj){
+// 		document.querySelector(`#c${obj.x}-${obj.y}`).classList.remove('head')
+// 	})
+// 	document.querySelector(`#c${she[she.length-1].x}-${she[she.length-1].y}`).classList.add('head')	
+// } 
+
+// btn.onclick=function(){
+// 	var t = setInterval(function(){
+// 		move(dir)
+// 	},200)	
+// }
+
+</script>

@@ -1,0 +1,42 @@
+<html>
+<head>
+<script>
+function confirm(obj,url)
+{
+var odiv=document.createElement(‘div’);
+var oaa=document.getElementById(‘aa’);
+odiv.id=”odiv”;
+odiv.style.height=80+’px’;
+odiv.style.width=150+’px’;
+odiv.style.margin=0+’px’;
+odiv.style.left=’50%’;
+odiv.style.top=’30%’;
+odiv.style.padding=0+’px’;
+odiv.innerHTML=”<p style=’margin:0; padding:0; border-bottom:1px solid #fff; font-size:12px;  width:99%; height:auto; margin:0 auto; text-align:left;’>小波提醒您：</p><p style=’margin:0; padding:0; width:99%; font-size:16px; height:auto; margin:0 auto; text-align:center;’>”+obj+”</p>”+”<dd id=’queding’ style=’width:auto; height:30px; margin:0;padding:0; cursor:pointer; float:left; background:green; color:red; margin-top:10px; line-height:30px;’>确定</dd><dd id=’quxiao’ style=’width:auto; cursor:pointer; height:30px; margin:0;padding:0; float:right; background:green; color:#000; margin-top:10px; line-height:30px;’>取消</dd>”;
+odiv.style.background=”#ccc”;
+odiv.style.position=”absolute”;
+odiv.style.Zindex=”99999″;
+oaa.appendChild(odiv);
+var transbox=document.getElementById(‘transbox’);
+transbox.id=”transbox”;
+transbox.style.display=”block”;
+document.getElementById(‘quxiao’).onclick=function()
+{
+oaa.removeChild(odiv);
+transbox.style.display=”none”;
+return false;
+}
+document.getElementById(‘queding’).onclick=function()
+{
+window.location.href=url;
+return true;
+}
+}
+</script>
+</head>
+<body>
+<div id=’transbox’ style=’position:absolute;left:0px; top:0px; display:none;width: 100%;height:100%; margin: 0 0px;background-color: #000;filter:alpha(opacity=30);opacity: 0.5;-moz-opacity:0.5;’></div>
+<div id=”aa”></div>
+<a href=”javascript:;;” onclick=”return confirm(‘11111′,’http://www.baidu.com/’);”>1111</a>
+</body>
+</html>
